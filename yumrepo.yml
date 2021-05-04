@@ -1,0 +1,24 @@
+- hosts: all
+  vars:
+    - dvd_dir: "/dvd1"
+    
+  tasks:
+    - file:
+        state: directory
+        path: "{{ dvd_dir }}"
+    - mount:
+        src: "/dev/cdrom"
+        path: "{{ dvd_dir }}"
+        state: mounted
+        fstype: iso9660
+        
+    - yum_repository:
+        baseurl: "{{ dvd_dir }}/AppStream"
+        name: "dvd1"
+        gpgcheck: no
+        description: "Yum repo 1"
+    - yum_repository:
+        baseurl: "{{ dvd_dir }}/BaseOS"
+        name: "dvd2"
+        gpgcheck: no
+        description: "Yum repo 2"
